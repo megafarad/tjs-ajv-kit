@@ -5,7 +5,7 @@ TS → JSON Schema (via **typescript-json-schema**) + **AJV** + **Express** midd
 ## Install
 
 ```bash
-npm i tjs-ajv-kit ajv ajv-formats
+npm i @sirhc77/tjs-ajv-kit ajv ajv-formats
 # peer deps: typescript, express
 ````
 
@@ -25,7 +25,7 @@ Each schema gets `$id` like `#/schemas/CreateUser.json`.
 
 ```ts
 import express from "express";
-import { KitValidator } from "tjs-ajv-kit";
+import { KitValidator } from "@sirhc77/tjs-ajv-kit";
 // Import generated JSON (let your bundler inline it) or read from disk
 import CreateUserSchema from "./schemas/CreateUser.schema.json" with { type: "json" };
 
@@ -81,7 +81,7 @@ npx tjs-ajv-kit --tsconfig tsconfig.json --types CreateUser --out src/schemas
 
 ```ts
 // app/src/routes.ts
-import { KitValidator } from "tjs-ajv-kit";
+import { KitValidator } from "@sirhc77/tjs-ajv-kit";
 import CreateUserSchema from "./schemas/CreateUser.schema.json" with { type: "json" };
 
 const v = new KitValidator();
