@@ -13,7 +13,7 @@ npm i @sirhc77/tjs-ajv-kit ajv ajv-formats
 
 ```bash
 # Using tsconfig
-tjs-ajv-kit --tsconfig tsconfig.json --types CreateUser,ListUsersQuery --out src/schemas
+tjs-ajv-kit --tsconfig tsconfig.json --types "CreateUser,ListUsersQuery" --out src/schemas
 
 # Or with include globs
 tjs-ajv-kit --include "src/**/*.ts" --types CreateUser --out src/schemas
@@ -99,7 +99,7 @@ Generate schemas **before** you build, so your validator always matches your TS 
 ```json
 {
   "scripts": {
-    "gen:schema": "tjs-ajv-kit --tsconfig tsconfig.json --types CreateUser,ListUsersQuery --out src/schemas",
+    "gen:schema": "tjs-ajv-kit --tsconfig tsconfig.json --types \"CreateUser,ListUsersQuery\" --out src/schemas",
     "build": "npm run gen:schema && tsup",
     "dev": "npm run gen:schema && tsup --watch",
     "prepublishOnly": "npm run build"
