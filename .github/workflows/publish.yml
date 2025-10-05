@@ -19,6 +19,9 @@ jobs:
       - name: Install dependencies & generate package-lock.json
         run: npm i
 
+      - name: Test
+        run: npm run test
+
       - name: Build
         run: npm run build
 
