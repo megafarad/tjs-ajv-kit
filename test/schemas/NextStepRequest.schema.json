@@ -1,0 +1,83 @@
+{
+  "type": "object",
+  "properties": {
+    "mediaOutput": {
+      "$ref": "#/definitions/MediaOutput"
+    },
+    "seq": {
+      "type": "number"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "mediaOutput",
+    "seq"
+  ],
+  "definitions": {
+    "MediaOutput": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/CallPromptOutput"
+        },
+        {
+          "$ref": "#/definitions/MakeCallOutput"
+        },
+        {
+          "$ref": "#/definitions/NoMediaOutput"
+        }
+      ]
+    },
+    "CallPromptOutput": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "callPrompt"
+        },
+        "utterance": {
+          "type": "string"
+        },
+        "isReprompt": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "utterance"
+      ]
+    },
+    "MakeCallOutput": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "makeCall"
+        },
+        "result": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "result",
+        "type"
+      ]
+    },
+    "NoMediaOutput": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "noMediaOutput"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ]
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://memomemo.megafarad.com/schemas/NextStepRequest.json"
+}
