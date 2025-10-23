@@ -1,6 +1,6 @@
 {
   "name": "@sirhc77/tjs-ajv-kit",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "type": "module",
   "description": "TypeScript → JSON Schema (typescript-json-schema) + AJV + Express middleware, batteries included.",
   "main": "./dist/index.cjs",

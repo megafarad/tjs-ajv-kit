@@ -1,0 +1,87 @@
+{
+  "$ref": "#/definitions/TestType",
+  "definitions": {
+    "TestType": {
+      "type": "object",
+      "properties": {
+        "string": {
+          "type": "string"
+        },
+        "number": {
+          "type": "number"
+        },
+        "boolean": {
+          "type": "boolean"
+        },
+        "nested": {
+          "$ref": "#/definitions/NestedType"
+        },
+        "nestedArray": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NestedType"
+          }
+        },
+        "union": {
+          "$ref": "#/definitions/UnionType"
+        },
+        "record": {
+          "$ref": "#/definitions/RecordType"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "boolean",
+        "nested",
+        "nestedArray",
+        "number",
+        "record",
+        "string",
+        "union"
+      ]
+    },
+    "NestedType": {
+      "type": "object",
+      "properties": {
+        "string": {
+          "type": "string"
+        },
+        "number": {
+          "type": "number"
+        },
+        "boolean": {
+          "type": "boolean"
+        },
+        "record": {
+          "$ref": "#/definitions/RecordType"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "boolean",
+        "number",
+        "record",
+        "string"
+      ]
+    },
+    "RecordType": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "UnionType": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/NestedType"
+        },
+        {
+          "type": [
+            "string",
+            "number"
+          ]
+        }
+      ]
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "#/schemas/TestType.json"
+}

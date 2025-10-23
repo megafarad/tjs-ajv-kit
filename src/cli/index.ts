@@ -27,9 +27,10 @@ async function main() {
     const types = ((flags.get("types") as string) || "").split(",").filter(Boolean);
     const outDir = (flags.get("out") as string) || "src/schemas";
     const idPrefix = (flags.get("id-prefix") as string) || "#/schemas/";
-    const topRef = flags.has("topRef") ? true : true;
-    const noExtraProps = flags.has("noExtraProps") ? true : true;
-    const strictNullChecks = flags.has("strictNullChecks") ? true : true;
+    const topRef = !flags.has("no-top-ref");
+    const noExtraProps = !flags.has("extra-props");
+    const strictNullChecks = !flags.has("no-strict-null-checks");
+    const allowRecordAdditionalProps = !flags.has("no-record-additional-props");
 
     await generateSchemas({
         tsconfig,
@@ -39,7 +40,8 @@ async function main() {
         idPrefix,
         topRef,
         noExtraProps,
-        strictNullChecks
+        strictNullChecks,
+        allowRecordAdditionalProps
     });
 }
 

@@ -12,7 +12,61 @@ type GenOptions = {
     topRef?: boolean;
     noExtraProps?: boolean;
     strictNullChecks?: boolean;
+    allowRecordAdditionalProps? : boolean;
 };
+
+function isRecordLikeSchema(schema: TJS.DefinitionOrBoolean) {
+    if (typeof schema === "boolean") return false;
+    if (schema.type !== "object") return false;
+
+
+    return !schema.properties || Object.keys(schema.properties).length === 0;
+
+}
+
+function processSchemaForRecords(schema: TJS.DefinitionOrBoolean) {
+    if (typeof schema === "boolean") return;
+    if (isRecordLikeSchema(schema)) {
+        schema.additionalProperties = true;
+        return;
+    }
+
+    if (schema.definitions) {
+        for (const def of Object.values(schema.definitions)) {
+            processSchemaForRecords(def);
+        }
+    }
+
+    if (schema.properties) {
+        for (const prop of Object.values(schema.properties)) {
+            if (typeof prop === "boolean") {
+                return;
+            } else {
+                processSchemaForRecords(prop);
+            }
+        }
+    }
+
+    if (schema.items) {
+        if (Array.isArray(schema.items)) {
+            schema.items.forEach(processSchemaForRecords);
+        } else {
+            processSchemaForRecords(schema.items);
+        }
+    }
+
+    if (schema.anyOf) {
+        schema.anyOf.forEach(processSchemaForRecords);
+    }
+
+    if (schema.allOf) {
+        schema.allOf.forEach(processSchemaForRecords);
+    }
+
+    if (schema.oneOf) {
+        schema.oneOf.forEach(processSchemaForRecords);
+    }
+}
 
 export async function generateSchemas(opts: GenOptions) {
     const {
@@ -23,7 +77,8 @@ export async function generateSchemas(opts: GenOptions) {
         idPrefix = "#/schemas/",
         topRef = true,
         noExtraProps = true,
-        strictNullChecks = true
+        strictNullChecks = true,
+        allowRecordAdditionalProps = true
     } = opts;
 
     if (!types?.length) throw new Error("--types is required (comma-separated list)");
@@ -58,8 +113,13 @@ export async function generateSchemas(opts: GenOptions) {
     fs.mkdirSync(outDir, { recursive: true });
 
     for (const typeName of types) {
-        const schema = generator.getSchemaForSymbol(typeName);
+        const schema: TJS.Definition = generator.getSchemaForSymbol(typeName);
         (schema as any).$id = `${idPrefix}${typeName}.json`;
+
+        if (allowRecordAdditionalProps) {
+            processSchemaForRecords(schema);
+        }
+
         const outPath = path.join(outDir, `${typeName}.schema.json`);
         fs.writeFileSync(outPath, JSON.stringify(schema, null, 2));
         // eslint-disable-next-line no-console
